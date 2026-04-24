@@ -23,6 +23,26 @@ filebeat.inputs:
   multiline.negate: false
   multiline.match: after
 
+- type: filestream
+  id: firewall_logs
+  enabled: ${FIREWALL_LOGS_ENABLED:false}
+  paths:
+    - ${FIREWALL_LOG_PATH:/sample_logs/firewall.log}
+  fields:
+    log_type: firewall
+    source_host: ${FIREWALL_SOURCE_HOST:test-firewall}
+  fields_under_root: false
+
+- type: filestream
+  id: proxy_logs
+  enabled: ${PROXY_LOGS_ENABLED:false}
+  paths:
+    - ${PROXY_LOG_PATH:/sample_logs/proxy.log}
+  fields:
+    log_type: proxy
+    source_host: ${PROXY_SOURCE_HOST:test-proxy}
+  fields_under_root: false  
+
 output.file:
   path: "/aggregated_logs"
   filename: aggregated

@@ -26,7 +26,7 @@ class PostgresStorage:
 
             # Extract fields from JSON imported log object
             log_type = log_data.get('fields', {}).get('log_type', 'unknown')
-            source_host = log_data.get('fields', {}).get('source', 'unknown')
+            source_host = log_data.get('fields', {}).get('source_host', 'unknown')
             raw_message = log_data.get('message', '')
 
             # Extract fields from LLM output

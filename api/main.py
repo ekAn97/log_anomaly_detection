@@ -12,6 +12,14 @@ from database import db
 from drain_analysis import drain_analyzer
 from raw_log_reader import raw_log_reader
 
+SEVERITY_TO_CLASSIFICATION = {
+    "INFO": "Benign",
+    "LOW": "Benign",
+    "MEDIUM": "Needs Attention",
+    "HIGH": "Anomaly",
+    "CRITICAL": "Anomaly",
+}
+
 app = FastAPI(
     title = "Red Flags API",
     description = "REST API for querying security incidents detected.",
@@ -142,7 +150,10 @@ async def list_incidents(
                 "source_host": source_host,
                 "hours": hours
             },
-            "incidents": incidents
+            "incidents": [
+                {**dict(i), "classification": SEVERITY_TO_CLASSIFICATION.get(i["severity"], "Unknown")}
+                for i in incidents
+            ]
         }
     except Exception as e:
         raise HTTPException(status_code = 500, detail = f"Database error: {str(e)}")

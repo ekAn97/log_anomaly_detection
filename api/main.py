@@ -60,7 +60,7 @@ app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 @app.get("/")
 @limiter.limit("100/minute")
-async def root(request):
+async def root(request: Request):
     return {
         "service": "Red Flags API",
         "version": "1.0.0",
